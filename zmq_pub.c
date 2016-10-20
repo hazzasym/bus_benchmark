@@ -4,7 +4,7 @@
 #include <czmq.h>
 #include <pthread.h>
 
-#define MSG_MAX 500
+#define MSG_MAX 1000000
 
 int client = 0;
 
@@ -18,7 +18,7 @@ void burst_message(zsock_t* sock)
 	int n_p;
 	int64_t start = zclock_time();
 	for ( n_p = 0 ; n_p < MSG_MAX ; n_p++ ) {
-		zstr_send(sock, data2k);
+		zstr_sendf(sock, "%s : %d", data2k, n_p);
 	}
 	int elaps = (zclock_time() - start) / 1000;
 	printf("%s : %d\n", "Time used", elaps);
@@ -62,7 +62,7 @@ int main(int argc, const char* argv[])
 	zsock_t *pub = zsock_new_pub("tcp://127.0.0.1:9876");
 	assert(pub);
   printf("HVM current %d\n", zsock_sndhwm(pub));
-  zsock_set_sndhwm (pub, 1100000);
+  zsock_set_sndhwm (pub, 0);
   printf("HVM current %d\n", zsock_sndhwm(pub));
 	zsock_t *rep = zsock_new_rep("tcp://127.0.0.1:9877");
 	assert(rep);

@@ -7,13 +7,13 @@
 int main(int argc, const char* argv[])
 {
 
-	zsock_t *sub = zsock_new_sub("tcp://127.0.0.1:9876", "T");
+	zsock_t *sub = zsock_new_sub("tcp://122.155.0.233:9876", "T");
 	assert(sub);
   printf("HVM current %d\n", zsock_rcvhwm(sub));
-  zsock_set_rcvhwm(sub, 1100000);
+  zsock_set_rcvhwm(sub, 0);
   printf("HVM current %d\n", zsock_rcvhwm(sub));
 
-	zsock_t *req = zsock_new_req("tcp://127.0.0.1:9877");
+	zsock_t *req = zsock_new_req("tcp://122.155.0.233:9877");
 	assert(req);
 
 	while (true) {
@@ -35,7 +35,7 @@ int main(int argc, const char* argv[])
 
 	while (true) {
 		char *sub_msg = zstr_recv(sub);
-		printf("%s %d\n", "data numbers", ndata);
+		printf("%s : %d\n", sub_msg, ndata);
 		if (0 == strcmp("TEND", sub_msg)) {
 			printf("%s %s\n", "received last message.", sub_msg);
 			zstr_free(&sub_msg);
